@@ -14,8 +14,15 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pre-commit>=4.5.0",
+    "pytest>=9.0.2",
     "ruff>=0.14.8",
 ]
+
+[tool.pytest]
+testpaths = [
+    "tests",
+]
+pythonpath = ["src"]
 
 
 [tool.ruff]

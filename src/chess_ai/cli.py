@@ -2,7 +2,7 @@ import argparse
 import sys
 import unittest
 
-from tests import tests
+from tests import test_
 
 from chess_ai.domain.board import Board
 from chess_ai.ui.pygame_ui import run_game
@@ -11,7 +11,7 @@ from chess_ai.ui.pygame_ui import run_game
 def run_tests():
     print("🧪 Starte Unittests...")
     loader = unittest.TestLoader()
-    suite = loader.loadTestsFromModule(tests)
+    suite = loader.loadTestsFromModule(test_)
     runner = unittest.TextTestRunner(verbosity=3)
     runner.failfast = False
     result = runner.run(suite)
