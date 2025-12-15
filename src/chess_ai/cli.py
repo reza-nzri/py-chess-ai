@@ -2,7 +2,7 @@ import argparse
 import sys
 import unittest
 
-import tests
+from tests import tests
 
 from chess_ai.domain.board import Board
 from chess_ai.ui.pygame_ui import run_game
