@@ -259,6 +259,13 @@ class Board(BoardBase):
         """
         # TODO: Implement
 
+        for piece in self.iterate_cells_with_pieces(white):
+            if type(piece).__name__ == "King":
+                return piece
+
+        return None
+
+
     def is_king_check(self, white):
         """
         **TODO**: Evaluate if the king of given color is currently in check.
