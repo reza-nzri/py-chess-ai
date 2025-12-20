@@ -349,6 +349,8 @@ class Board(BoardBase):
 
         return self.get_cell(cell=cell) is None
 
+
+
     def piece_can_enter_cell(self, piece, cell):
         """
         **TODO**: Check if the given piece can enter the given cell.
@@ -368,15 +370,16 @@ class Board(BoardBase):
 
         target_piece = self.get_cell(cell=cell)
 
-        # Checks if cell is valid
-        if not self.is_valid_cell(cell=cell):
+        #Checks if cell is valid
+        if self.is_valid_cell(cell=cell) == False:
             return False
 
-        # If cell is empty,
+        #If cell is empty,
         if target_piece is None:
             return True
 
         return target_piece.white != piece.white
+
 
     def piece_can_hit_on_cell(self, piece, cell):
         """
@@ -397,11 +400,11 @@ class Board(BoardBase):
 
         target_piece = self.get_cell(cell=cell)
 
-        # Checks if cell is valid
-        if not self.is_valid_cell(cell=cell):
+        #Checks if cell is valid
+        if self.is_valid_cell(cell=cell) == False:
             return False
 
-        # If cell is empty, piece cannot hit
+        #If cell is empty, piece cannot hit
         if target_piece is None:
             return False
 
