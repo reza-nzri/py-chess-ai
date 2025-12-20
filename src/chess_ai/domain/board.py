@@ -4,12 +4,13 @@ from uuid import uuid4
 
 import numpy as np
 
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook
-from chess_ai.util.helpers import (
+from src.chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook, Piece
+from src.chess_ai.util.helpers import (
     InvalidColumnException,
     InvalidRowException,
     map_piece_to_character,
 )
+from tests.test_ import iterate_pieces
 
 
 class BoardBase:
@@ -54,7 +55,7 @@ class BoardBase:
         """
         Saves current board configuration to disk.
 
-        :param name: Filename to use. If None is provided, a unique one will be generated
+        :param fname: Filename to use. If None is provided, a unique one will be generated
         """
         if fname is None:
             fname = str(uuid4())
@@ -111,7 +112,7 @@ class BoardBase:
         """
         Read previously stored configuration from disk
 
-        :param name: Filename to use.
+        :param fname: Filename to use.
         """
 
         with open(fname, "rt") as f:
@@ -240,7 +241,10 @@ class Board(BoardBase):
         :param white: True if WHITE pieces are to be iterated, False otherwise
         :type white: Boolean
         """
-        # TODO: Implement
+        for row in self.cells:
+            for cell in row:
+                if cell is not None and cell.white == white:
+                    yield cell
 
     def find_king(self, white):
         """
@@ -256,6 +260,13 @@ class Board(BoardBase):
         """
         # TODO: Implement
 
+        for piece in self.iterate_cells_with_pieces(white):
+            if type(piece).__name__ == "King":
+                return piece
+
+        return None
+
+
     def is_king_check(self, white):
         """
         **TODO**: Evaluate if the king of given color is currently in check.
@@ -267,6 +278,21 @@ class Board(BoardBase):
         Iterate over each reachable cell and check if the kings cell is reachable. If yes, shortcut and return True right away.
         """
         # TODO: Implement
+        king = self.find_king(white=white)
+
+        #if king is None:
+            #return False
+
+        king_cell = king.cell
+
+        for opposing_piece in self.iterate_cells_with_pieces(white= not white):
+            reachable_cells = opposing_piece.get_reachable_cells()
+
+            for reachable_cell in reachable_cells:
+                if np.array_equal(reachable_cell, king_cell):
+                    return True
+
+        return False
 
     def evaluate(self):
         """
@@ -293,6 +319,12 @@ class Board(BoardBase):
         Don´t forget to handle the special case of "cell" being None. Return False in that case
         """
         # TODO: Implement
+        if cell is None:
+            return False
+
+        row, col = cell
+        return 0 <= row <= 7 and 0 <= col <= 7
+
 
     def cell_is_valid_and_empty(self, cell):
         """
@@ -303,6 +335,11 @@ class Board(BoardBase):
         If so, use "get_cell()" to retrieve the piece placed on it and return True if there is None
         """
         # TODO: Implement
+        if not self.is_valid_cell(cell=cell):
+            return False
+
+        return self.get_cell(cell=cell) is None
+
 
     def piece_can_enter_cell(self, piece, cell):
         """
@@ -321,6 +358,19 @@ class Board(BoardBase):
         """
         # TODO: Implement
 
+        target_piece = self.get_cell(cell=cell)
+
+        #Checks if cell is valid
+        if self.is_valid_cell(cell=cell) == False:
+            return False
+
+        #If cell is empty,
+        if target_piece is None:
+            return True
+
+        return target_piece.white != piece.white
+
+
     def piece_can_hit_on_cell(self, piece, cell):
         """
         **TODO**: Check if the given piece can *hit* at the given cell.
@@ -337,3 +387,15 @@ class Board(BoardBase):
         the given piece "white" attribute.
         """
         # TODO: Implement
+
+        target_piece = self.get_cell(cell=cell)
+
+        #Checks if cell is valid
+        if self.is_valid_cell(cell=cell) == False:
+            return False
+
+        #If cell is empty, piece cannot hit
+        if target_piece is None:
+            return False
+
+        return target_piece.white != piece.white
