@@ -54,7 +54,7 @@ class BoardBase:
         """
         Saves current board configuration to disk.
 
-        :param fname: Filename to use. If None is provided, a unique one will be generated
+        :param name: Filename to use. If None is provided, a unique one will be generated
         """
         if fname is None:
             fname = str(uuid4())
@@ -111,7 +111,7 @@ class BoardBase:
         """
         Read previously stored configuration from disk
 
-        :param fname: Filename to use.
+        :param name: Filename to use.
         """
 
         with open(fname, "rt") as f:
@@ -258,12 +258,6 @@ class Board(BoardBase):
         :return: The :py:class:'King': object of the given color or None if there is no King on the board.
         """
         # TODO: Implement
-
-        for piece in self.iterate_cells_with_pieces(white):
-            if type(piece).__name__ == "King":
-                return piece
-
-        return None
 
     def is_king_check(self, white):
         """
