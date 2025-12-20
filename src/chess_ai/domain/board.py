@@ -4,13 +4,12 @@ from uuid import uuid4
 
 import numpy as np
 
-from src.chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook, Piece
-from src.chess_ai.util.helpers import (
+from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook
+from chess_ai.util.helpers import (
     InvalidColumnException,
     InvalidRowException,
     map_piece_to_character,
 )
-from tests.test_ import iterate_pieces
 
 
 class BoardBase:
@@ -339,7 +338,6 @@ class Board(BoardBase):
             return False
 
         return self.get_cell(cell=cell) is None
-
 
     def piece_can_enter_cell(self, piece, cell):
         """
