@@ -4,13 +4,12 @@ from uuid import uuid4
 
 import numpy as np
 
-from src.chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook, Piece
-from src.chess_ai.util.helpers import (
+from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
+from chess_ai.util.helpers import (
     InvalidColumnException,
     InvalidRowException,
     map_piece_to_character,
 )
-from tests.test_ import iterate_pieces
 
 
 class BoardBase:
@@ -271,7 +270,6 @@ class Board(BoardBase):
 
         return None
 
-
     def is_king_check(self, white):
         """
         **TODO**: Evaluate if the king of given color is currently in check.
@@ -285,12 +283,12 @@ class Board(BoardBase):
         # TODO: Implement
         king = self.find_king(white=white)
 
-        #if king is None:
-            #return False
+        # if king is None:
+        # return False
 
         king_cell = king.cell
 
-        for opposing_piece in self.iterate_cells_with_pieces(white= not white):
+        for opposing_piece in self.iterate_cells_with_pieces(white=not white):
             reachable_cells = opposing_piece.get_reachable_cells()
 
             for reachable_cell in reachable_cells:
@@ -330,7 +328,6 @@ class Board(BoardBase):
         row, col = cell
         return 0 <= row <= 7 and 0 <= col <= 7
 
-
     def cell_is_valid_and_empty(self, cell):
         """
         **TODO**: Check if the given cell is empty, meaning there is no piece placed on it.
@@ -348,7 +345,6 @@ class Board(BoardBase):
             return False
 
         return self.get_cell(cell=cell) is None
-
 
 
     def piece_can_enter_cell(self, piece, cell):
@@ -370,16 +366,15 @@ class Board(BoardBase):
 
         target_piece = self.get_cell(cell=cell)
 
-        #Checks if cell is valid
-        if self.is_valid_cell(cell=cell) == False:
+        # Checks if cell is valid
+        if not self.is_valid_cell(cell=cell):
             return False
 
-        #If cell is empty,
+        # If cell is empty,
         if target_piece is None:
             return True
 
         return target_piece.white != piece.white
-
 
     def piece_can_hit_on_cell(self, piece, cell):
         """
@@ -400,11 +395,11 @@ class Board(BoardBase):
 
         target_piece = self.get_cell(cell=cell)
 
-        #Checks if cell is valid
-        if self.is_valid_cell(cell=cell) == False:
+        # Checks if cell is valid
+        if not self.is_valid_cell(cell=cell):
             return False
 
-        #If cell is empty, piece cannot hit
+        # If cell is empty, piece cannot hit
         if target_piece is None:
             return False
 
