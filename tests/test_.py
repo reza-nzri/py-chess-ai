@@ -31,7 +31,7 @@ def print_movability_error(board, piece, cell, positiveMovement):
     RESET = "\x1b[37m"
     text = RED + "Movability wrongly implemented. In this configuration\n\n"
     for row in range(7, -1, -1):
-        text += "        " + RESET + f"{row+1} "
+        text += "        " + RESET + f"{row + 1} "
         for col in range(8):
             color = RESET
             if piece.cell[0] == row and piece.cell[1] == col:
@@ -358,7 +358,7 @@ class TestBoard(unittest.TestCase):
             # Iterate white pieces
             for piece in self.board.iterate_cells_with_pieces(color):
                 # Unpack cell tuple
-                row, col = piece.cell
+                _row, _col = piece.cell
 
                 if color is True:  # White pieces need to be on row 0 or 1
                     self.assertLessEqual(
