@@ -265,7 +265,6 @@ class Board(BoardBase):
 
         return None
 
-
     def is_king_check(self, white):
         """
         **TODO**: Evaluate if the king of given color is currently in check.
