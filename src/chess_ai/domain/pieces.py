@@ -1,4 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
+
+if TYPE_CHECKING:
+    from chess_ai.domain.board import Board
+
+from chess_ai.util.cell import Cell
 
 
 class Piece:
@@ -9,14 +18,14 @@ class Piece:
     In this class, you need to implement two methods, the "evaluate()" method and the "get_valid_cells()" method.
     """
 
-    def __init__(self, board, white):
+    def __init__(self, board: Board, white):
         """
         Constructor for a piece based on provided parameters
 
         :param board: Reference to the board this piece is placed on
         :type board: :ref:class:`board`
         """
-        self.board = board
+        self.board: Board = board
         self.white = white
         self.cell = None
 
@@ -51,11 +60,11 @@ class Piece:
     def evaluate(self):
         """
         **TODO** Implement a meaningful numerical evaluation of this piece on the board.
-        This evaluation happens independent of the color as later, values for white pieces will be added and values for black pieces will be substracted.
+        This evaluation happens independent of the color as later, values for white pieces will be added and values for black pieces will be subtracted.
 
         **HINT** Making this method *independent* of the pieces color is crucial to get a *symmetric* evaluation metric in the end.
 
-        - The pure existance of this piece alone is worth some points. This will create an effect where the player with more pieces on the board will, in sum, get the most points assigned.
+        - The pure existence of this piece alone is worth some points. This will create an effect where the player with more pieces on the board will, in sum, get the most points assigned.
         - Think of other criteria that would make this piece more valuable, e.g. movability or whether this piece can hit other pieces. Value them accordingly.
 
         :return: Return numerical score between -infinity and +infinity. Greater values indicate better evaluation result (more favorable).
@@ -84,7 +93,8 @@ class Piece:
 
         :return: Return True
         """
-        # TODO: Implement
+        # TODO: Only returns run movability methods from pieces to integrate with rest of code. Its not a final Implementation
+        return self.get_reachable_cells()
 
 
 class Pawn(Piece):  # Bauer
@@ -93,13 +103,13 @@ class Pawn(Piece):  # Bauer
 
     def get_reachable_cells(self):
         """
-        **TODO** Implement the movability mechanik for `pawns <https://de.wikipedia.org/wiki/Bauer_(Schach)>`_.
+        Implementation of movability mechanic for `pawns <https://de.wikipedia.org/wiki/Bauer_(Schach)>`_.
 
         **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
         the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
 
         **HINT**: Pawns can move only forward (towards the opposing army). Depening of whether this piece is black of white, this means pawn
-        can move only to higher or lower rows. Normally a pawn can only move one cell forward as long as the target cell is not occupied by any other piece.
+        can move only to higher or lower rows. Normally a pawn can only move one cell forward as long as theothe target cell is not occupied by any r piece.
         If the pawn is still on its starting row, it can also dash forward and move two pieces at once (as long as the path to that cell is not blocked).
         Pawns can only hit diagonally, meaning they can hit other pieces only the are one cell forward left or one cell forward right from them.
 
@@ -111,7 +121,42 @@ class Pawn(Piece):  # Bauer
 
         :return: A list of reachable cells this pawn could move into.
         """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
+        moves: list[Cell] = []
+        row, column = self.cell
+        if self.is_white():
+            move_forward: Cell = (row + 1, column)
+            if self.board.cell_is_valid_and_empty(move_forward):
+                moves.append(move_forward)
+            if row == 1:
+                kick_start: Cell = (row + 2, column)
+                if self.board.cell_is_valid_and_empty(
+                    kick_start
+                ) and self.board.cell_is_valid_and_empty(move_forward):
+                    moves.append(kick_start)
+            white_hit_right: Cell = (row + 1, column + 1)
+            if self.can_hit_on_cell(white_hit_right):
+                moves.append(white_hit_right)
+            white_hit_left: Cell = (row + 1, column - 1)
+            if self.can_hit_on_cell(white_hit_left):
+                moves.append(white_hit_left)
+        else:
+            move_forward: Cell = (row - 1, column)
+            if self.board.cell_is_valid_and_empty(move_forward):
+                moves.append(move_forward)
+            if row == 6:
+                kick_start: Cell = (row - 2, column)
+                if self.board.cell_is_valid_and_empty(
+                    kick_start
+                ) and self.board.cell_is_valid_and_empty(move_forward):
+                    moves.append([row - 2, column])
+            black_hit_right: Cell = (row - 1, column - 1)
+            if self.can_hit_on_cell(black_hit_right):
+                moves.append(black_hit_right)
+            black_hit_left: Cell = (row - 1, column + 1)
+            if self.can_hit_on_cell(black_hit_left):
+                moves.append(black_hit_left)
+
+        return moves
 
 
 class Rook(Piece):  # Turm
