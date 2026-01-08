@@ -96,6 +96,48 @@ class Piece:
         # TODO: Only returns run movability methods from pieces to integrate with rest of code. Its not a final Implementation
         return self.get_reachable_cells()
 
+    def get_lengthwise_cells(self) -> list[Cell]:
+        moves: list[Cell] = []
+        row, column = self.cell
+
+        for x in range(row + 1, 8):
+            up_cells: Cell = (x, column)
+            if self.board.cell_is_valid_and_empty(up_cells):
+                moves.append(up_cells)
+            else:
+                if self.can_hit_on_cell(up_cells):
+                    moves.append(up_cells)
+                break
+
+        for x in range(row - 1, -1, -1):
+            down_cells: Cell = (x, column)
+            if self.board.cell_is_valid_and_empty(down_cells):
+                moves.append(down_cells)
+            else:
+                if self.can_hit_on_cell(down_cells):
+                    moves.append(down_cells)
+                break
+
+        for y in range(column + 1, 8):
+            right_cells: Cell = (row, y)
+            if self.board.cell_is_valid_and_empty(right_cells):
+                moves.append(right_cells)
+            else:
+                if self.can_hit_on_cell(right_cells):
+                    moves.append(right_cells)
+                break
+
+        for y in range(column - 1, -1, -1):
+            left_cells: Cell = (row, y)
+            if self.board.cell_is_valid_and_empty(left_cells):
+                moves.append(left_cells)
+            else:
+                if self.can_hit_on_cell(left_cells):
+                    moves.append(left_cells)
+                break
+
+        return moves
+
 
 class Pawn(Piece):  # Bauer
     def __init__(self, board, white):
@@ -165,7 +207,7 @@ class Rook(Piece):  # Turm
 
     def get_reachable_cells(self):
         """
-        **TODO** Implement the movability mechanic for `rooks <https://de.wikipedia.org/wiki/Turm_(Schach)>`_.
+        Implementation of the movability mechanic for `rooks <https://de.wikipedia.org/wiki/Turm_(Schach)>`_.
 
         **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
         the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
@@ -179,7 +221,7 @@ class Rook(Piece):  # Turm
 
         :return: A list of reachable cells this rook could move into.
         """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
+        return self.get_lengthwise_cells()
 
 
 class Knight(Piece):  # Springer
