@@ -230,8 +230,6 @@ class Knight(Piece):  # Springer
 
     def get_reachable_cells(self):
         """
-        **TODO** Implement the movability mechanic for `knights <https://de.wikipedia.org/wiki/Springer_(Schach)>`_.
-
         **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
         the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
 
@@ -244,8 +242,30 @@ class Knight(Piece):  # Springer
 
         :return: A list of reachable cells this knight could move into.
         """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
+        reachable_cells = []
+        row, col = self.cell
 
+        directions = {
+            (-2, -1),
+            (-2, 1),
+            (2, -1),
+            (2, 1),
+            (-1, -2),
+            (-1, 2),
+            (1, -2),
+            (1, 2),
+        }
+
+        for direction_row, direction_col in directions:
+            target_cell = (row + direction_row, col + direction_col)
+
+            if self.board.cell_is_valid_and_empty(target_cell):
+                reachable_cells.append(target_cell)
+
+            elif self.board.piece_can_hit_on_cell(target_cell):
+                reachable_cells.append(target_cell)
+
+        return reachable_cells
 
 class Bishop(Piece):  # Läufer
     def __init__(self, board, white):
