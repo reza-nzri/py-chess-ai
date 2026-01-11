@@ -253,6 +253,8 @@ class Bishop(Piece):  # Läufer
 
     def get_reachable_cells(self):
         """
+        **TODO** Implement the movability mechanic for `bishop <https://de.wikipedia.org/wiki/L%C3%A4ufer_(Schach)>`_.
+
         **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
         the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
 
@@ -264,15 +266,40 @@ class Bishop(Piece):  # Läufer
 
         :return: A list of reachable cells this bishop could move into.
         """
+        # TODO: Implement a method that returns all cells this piece can enter in its next move
+
+
+class Queen(Piece):  # Königin
+    def __init__(self, board, white):
+        super().__init__(board, white)
+
+    def get_reachable_cells(self):
+        """
+        **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
+        the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
+
+        **HINT**: Queens can move horizontally, vertically and diagonally an arbitrary amount of cells until blocked. They combine the movability
+        of rooks and bishops.
+
+        You can call :py:meth:`cell_is_valid_and_empty <board.Board.cell_is_valid_and_empty>`,
+        :py:meth:`can_hit_on_cell <pieces.Piece.can_hit_on_cell>` and :py:meth:`can_enter_cell <pieces.Piece.can_enter_cell>`
+        to check for necessary conditions to implement the rook movability mechanics.
+
+        :return: A list of reachable cells this queen could move into.
+        """
         reachable_cells = []
 
         row, col = self.cell
 
         directions = {
+            (-1, 0),
+            (1, 0),
+            (0, -1),
+            (0, 1),
             (-1, -1),
             (1, -1),
             (-1, -1),
-            (1, 1)
+            (1, 1),
         }
 
         for direction_row, direction_col in directions:
@@ -295,29 +322,6 @@ class Bishop(Piece):  # Läufer
                     break
 
         return reachable_cells
-
-
-class Queen(Piece):  # Königin
-    def __init__(self, board, white):
-        super().__init__(board, white)
-
-    def get_reachable_cells(self):
-        """
-        **TODO** Implement the movability mechanic for the `queen <https://de.wikipedia.org/wiki/Dame_(Schach)>`_.
-
-        **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
-        the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
-
-        **HINT**: Queens can move horizontally, vertically and diagonally an arbitrary amount of cells until blocked. They combine the movability
-        of rooks and bishops.
-
-        You can call :py:meth:`cell_is_valid_and_empty <board.Board.cell_is_valid_and_empty>`,
-        :py:meth:`can_hit_on_cell <pieces.Piece.can_hit_on_cell>` and :py:meth:`can_enter_cell <pieces.Piece.can_enter_cell>`
-        to check for necessary conditions to implement the rook movability mechanics.
-
-        :return: A list of reachable cells this queen could move into.
-        """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
 
 
 class King(Piece):  # König
