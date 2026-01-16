@@ -116,3 +116,7 @@ line-ending = "auto"
 
 docstring-code-format = false
 docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["F401"]
+"src/chess_ai/**/*.py" = ["F401"]

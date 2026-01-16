@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import numpy as np
 
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Piece, Queen, Rook
+from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
 from chess_ai.util.helpers import (
     InvalidColumnException,
     InvalidRowException,
