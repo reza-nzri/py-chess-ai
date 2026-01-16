@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import numpy as np
 
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook
+from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
 from chess_ai.util.helpers import (
     InvalidColumnException,
     InvalidRowException,
@@ -111,7 +111,8 @@ class BoardBase:
         """
         Read previously stored configuration from disk
 
-        :param name: Filename to use.
+        :param fname: Filename to use.
+        :param fname: Filename to use.
         """
 
         with open(fname, "rt") as f:
@@ -244,6 +245,10 @@ class Board(BoardBase):
             for cell in row:
                 if cell is not None and cell.white == white:
                     yield cell
+        for row in self.cells:
+            for cell in row:
+                if cell is not None and cell.white == white:
+                    yield cell
 
     def find_king(self, white):
         """
@@ -332,6 +337,10 @@ class Board(BoardBase):
         If so, use "get_cell()" to retrieve the piece placed on it and return True if there is None
         """
         # TODO: Implement
+        if not self.is_valid_cell(cell=cell):
+            return False
+
+        return self.get_cell(cell=cell) is None
         if not self.is_valid_cell(cell=cell):
             return False
 
