@@ -323,21 +323,18 @@ class Board(BoardBase):
 
     def cell_is_valid_and_empty(self, cell):
         """
-        **TODO**: Check if the given cell is empty, meaning there is no piece placed on it.
+        Check if the given cell is empty, meaning there is no piece placed on it.
 
         **HINT**:
         You can use the "is_valid_cell()" Method to verify the cell is valid in the first place.
         If so, use "get_cell()" to retrieve the piece placed on it and return True if there is None
         """
-        # TODO: Implement
-        if not self.is_valid_cell(cell=cell):
+        # First check if the cell is on the board
+        if not self.is_valid_cell(cell):
             return False
 
-        return self.get_cell(cell=cell) is None
-        if not self.is_valid_cell(cell=cell):
-            return False
-
-        return self.get_cell(cell=cell) is None
+        # Cell is valid and empty
+        return self.get_cell(cell) is None
 
     def piece_can_enter_cell(self, piece, cell):
         """
