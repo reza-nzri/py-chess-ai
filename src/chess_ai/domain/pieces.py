@@ -322,7 +322,7 @@ class Queen(Piece):  # Königin
 
     def get_reachable_cells(self):
         """
-        **TODO** Implement the movability mechanic for the `queen <https://de.wikipedia.org/wiki/Dame_(Schach)>`_.
+        Implement the movability mechanic for the `queen <https://de.wikipedia.org/wiki/Dame_(Schach)>`_.
 
         **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
         the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
@@ -336,8 +336,41 @@ class Queen(Piece):  # Königin
 
         :return: A list of reachable cells this queen could move into.
         """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
+        reachable_cells = []
 
+        row, col = self.cell
+
+        directions = {
+            (-1, 0),
+            (1, 0),
+            (0, -1),
+            (0, 1),
+            (-1, -1),
+            (1, -1),
+            (-1, -1),
+            (1, 1),
+        }
+
+        for direction_row, direction_col in directions:
+            current_row = row + direction_row
+            current_col = col + direction_col
+
+            while True:
+                current_cell = (current_row, current_col)
+
+                if self.board.cell_is_valid_and_empty(current_cell):
+                    reachable_cells.append(current_cell)
+
+                    current_row += direction_row
+                    current_col += direction_col
+
+                elif self.can_hit_on_cell(current_cell):
+                    reachable_cells.append(current_cell)
+                    break
+                else:
+                    break
+
+        return reachable_cells
 
 class King(Piece):  # König
     def __init__(self, board, white):

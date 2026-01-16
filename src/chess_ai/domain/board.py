@@ -55,7 +55,7 @@ class BoardBase:
         """
         Saves current board configuration to disk.
 
-        :param fname: Filename to use. If None is provided, a unique one will be generated
+        :param name: Filename to use. If None is provided, a unique one will be generated
         """
         if fname is None:
             fname = str(uuid4())
