@@ -10,6 +10,7 @@ from chess_ai.util.helpers import (
     InvalidRowException,
     map_piece_to_character,
 )
+from tests.test_ import iterate_pieces
 
 
 class BoardBase:
