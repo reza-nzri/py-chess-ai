@@ -231,20 +231,17 @@ class Board(BoardBase):
 
     def iterate_cells_with_pieces(self, white):
         """
-        **TODO**: Write a generator (using the yield keyword) that allows to iterate
-        over all cells with a piece of given color.
+        Iterate over all board cells that contain a piece of the given color.
 
-        **HINT**: You need a double-nested loop,
-        the first one iterates over all the rows, the second one iterates over each cell in the current row.
-        If the cell has a piece (so it is not None) and the piece has the correct color, *yield* it
+        This method is a generator. It goes through the board row by row and
+        yields each cell that contains a piece matching the given color.
 
-        :param white: True if WHITE pieces are to be iterated, False otherwise
-        :type white: Boolean
+        Args:
+            white (bool): True to iterate over white pieces, False for black pieces.
+
+        Yields:
+            Cell: A cell containing a piece of the specified color.
         """
-        for row in self.cells:
-            for cell in row:
-                if cell is not None and cell.white == white:
-                    yield cell
         for row in self.cells:
             for cell in row:
                 if cell is not None and cell.white == white:
