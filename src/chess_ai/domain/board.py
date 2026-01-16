@@ -249,7 +249,7 @@ class Board(BoardBase):
 
     def find_king(self, white):
         """
-        **TODO**: Find the king piece of given color and return that piece
+        Find the king piece of given color and return that piece
 
         **HINT**: You can use the iterate_cells_with_pieces() Method to find all
         pieces of a given color
@@ -259,8 +259,6 @@ class Board(BoardBase):
 
         :return: The :py:class:'King': object of the given color or None if there is no King on the board.
         """
-        # TODO: Implement
-
         for piece in self.iterate_cells_with_pieces(white):
             if type(piece).__name__ == "King":
                 return piece
@@ -269,7 +267,7 @@ class Board(BoardBase):
 
     def is_king_check(self, white):
         """
-        **TODO**: Evaluate if the king of given color is currently in check.
+        Evaluate if the king of given color is currently in check.
         A check is given if any opposing piece can beat the king in its next move.
 
         **HINT**: You can use the find_king() Method to find the king of the given color.
@@ -277,11 +275,10 @@ class Board(BoardBase):
         For each opposing piece, call the "get_reachable_cells()" method to get a list of all reachable cells.
         Iterate over each reachable cell and check if the kings cell is reachable. If yes, shortcut and return True right away.
         """
-        # TODO: Implement
         king = self.find_king(white=white)
 
-        # if king is None:
-        # return False
+        if king is None:
+            return False
 
         king_cell = king.cell
 
@@ -310,7 +307,7 @@ class Board(BoardBase):
 
     def is_valid_cell(self, cell):
         """
-        **TODO**: Check if the given cell coordinates are valid. A cell coordinate is valid if both
+        Check if the given cell coordinates are valid. A cell coordinate is valid if both
         row and column are between 0 and 7 inclusively.
 
         **HINT**:
@@ -318,7 +315,6 @@ class Board(BoardBase):
         being within the allowed range (0 to 7 inclusively).
         Don´t forget to handle the special case of "cell" being None. Return False in that case
         """
-        # TODO: Implement
         if cell is None:
             return False
 
@@ -376,7 +372,7 @@ class Board(BoardBase):
 
     def piece_can_hit_on_cell(self, piece, cell):
         """
-        **TODO**: Check if the given piece can *hit* at the given cell.
+        Check if the given piece can *hit* at the given cell.
         Note: You don´t need to check movement rules for the individual piece here. You only need to answer the question
         whether the piece can be placed on the given cell or not and hit an opposing piece.
 
@@ -389,8 +385,6 @@ class Board(BoardBase):
         If, however, there is another piece, it must be of opposing color. Check the other pieces "white" attribute and compare against
         the given piece "white" attribute.
         """
-        # TODO: Implement
-
         target_piece = self.get_cell(cell=cell)
 
         # Checks if cell is valid
