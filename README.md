@@ -36,12 +36,6 @@ Install dependencies using the lockfile:
 uv sync
 ````
 
-(Optional, for contributors only)
-
-```bash
-uv run pre-commit install
-```
-
 </details>
 <details>
 <summary><h2>▶️ Running the Application</h2></summary>

@@ -61,9 +61,11 @@ class Piece:
         """
         **TODO** Implement a meaningful numerical evaluation of this piece on the board.
         This evaluation happens independent of the color as later, values for white pieces will be added and values for black pieces will be subtracted.
+        This evaluation happens independent of the color as later, values for white pieces will be added and values for black pieces will be subtracted.
 
         **HINT** Making this method *independent* of the pieces color is crucial to get a *symmetric* evaluation metric in the end.
 
+        - The pure existence of this piece alone is worth some points. This will create an effect where the player with more pieces on the board will, in sum, get the most points assigned.
         - The pure existence of this piece alone is worth some points. This will create an effect where the player with more pieces on the board will, in sum, get the most points assigned.
         - Think of other criteria that would make this piece more valuable, e.g. movability or whether this piece can hit other pieces. Value them accordingly.
 
@@ -73,28 +75,54 @@ class Piece:
 
     def get_valid_cells(self):
         """
-        **TODO** Return a list of **valid** cells this piece can move into.
+        Return a list of valid cells this piece can move to.
 
-        A cell is valid if
-          a) it is **reachable**. That is what the :py:meth:`get_reachable_cells` method is for and
-          b) after a move into this cell the own king is not (or no longer) in check.
+        A cell is valid if:
+        - It is reachable according to the movement rules of the piece
+        (see `get_reachable_cells`), and
+        - After moving to this cell, the own King is not (or no longer) in check.
 
-        **HINT**: Use the :py:meth:`get_reachable_cells` method of this piece to receive a list of reachable cells.
-        Iterate through all of them and temporarily place the piece on this cell. Then check whether your own King (same color)
-        is in check. Use the :py:meth:`is_king_check_cached` method to test for checks. If there is no check after this move, add
-        this cell to the list of valid cells. After every move, restore the original board configuration.
+        Use `get_reachable_cells` to get all reachable cells. For each reachable
+        cell, temporarily move the piece to that cell and check whether the own
+        King (same color) is in check using `is_king_check_cached`. If the King is
+        not in check after the move, add the cell to the list of valid cells.
+        After each test, restore the original board state.
 
-        To temporarily move a piece into a new cell, first store its old position (self.cell) in a local variable.
-        The target cell might have another piece already placed on it.
-        Use :py:meth:`get_cell <board.BoardBase.get_cell>` to retrieve that piece (or None if there was none) and store it as well.
-        Then call :py:meth:`set_cell <board.BoardBase.set_cell>` to place this piece on the target cell and test for any checks given.
-        After this, restore the original configuration by placing this piece back into its old position (call :py:meth:`set_cell <board.BoardBase.set_cell>` again)
-        and place the previous piece also back into its cell.
+        To simulate a move, first store the current position of the piece
+        (`self.cell`). The target cell may already contain another piece. Retrieve
+        and store that piece using `get_cell`. Then place this piece on the target
+        cell using `set_cell` and perform the check. Finally, restore the original
+        board configuration by moving this piece back to its old cell and placing
+        the previously stored piece back on the target cell.
 
-        :return: Return True
+        Returns:
+            list: A list of valid cells this piece can legally move to.
         """
-        # TODO: Only returns run movability methods from pieces to integrate with rest of code. Its not a final Implementation
-        return self.get_reachable_cells()
+        valid_cells = []
+
+        reachable_cells = self.get_reachable_cells()
+        if self.cell is None:
+            return valid_cells
+
+        old_cell = np.array(self.cell)
+
+        for target_cell in reachable_cells:
+            captured_piece = self.board.get_cell(target_cell)
+
+            # Temporarily move this piece to the target cell
+            self.board.set_cell(target_cell, self)
+
+            # Check if own King is in check after the move
+            king_in_check = self.board.is_king_check_cached(self.white)
+
+            # Restore original board configuration (order matters!)
+            self.board.set_cell(old_cell, self)
+            self.board.set_cell(target_cell, captured_piece)
+
+            if not king_in_check:
+                valid_cells.append(target_cell)
+
+        return valid_cells
 
     def get_lengthwise_cells(self) -> list[Cell]:
         moves: list[Cell] = []
@@ -152,6 +180,7 @@ class Pawn(Piece):  # Bauer
 
         **HINT**: Pawns can move only forward (towards the opposing army). Depening of whether this piece is black of white, this means pawn
         can move only to higher or lower rows. Normally a pawn can only move one cell forward as long as theothe target cell is not occupied by any r piece.
+        can move only to higher or lower rows. Normally a pawn can only move one cell forward as long as theothe target cell is not occupied by any r piece.
         If the pawn is still on its starting row, it can also dash forward and move two pieces at once (as long as the path to that cell is not blocked).
         Pawns can only hit diagonally, meaning they can hit other pieces only the are one cell forward left or one cell forward right from them.
 
@@ -197,8 +226,6 @@ class Pawn(Piece):  # Bauer
             black_hit_left: Cell = (row - 1, column + 1)
             if self.can_hit_on_cell(black_hit_left):
                 moves.append(black_hit_left)
-
-        return moves
 
 
 class Rook(Piece):  # Turm

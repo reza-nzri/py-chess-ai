@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import numpy as np
 
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
+from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Piece, Queen, Rook
 from chess_ai.util.helpers import (
     InvalidColumnException,
     InvalidRowException,
@@ -54,7 +54,7 @@ class BoardBase:
         """
         Saves current board configuration to disk.
 
-        :param fname: Filename to use. If None is provided, a unique one will be generated
+        :param ffname: Filename to use. If None is provided, a unique one will be generated
         """
         if fname is None:
             fname = str(uuid4())
@@ -230,15 +230,16 @@ class Board(BoardBase):
 
     def iterate_cells_with_pieces(self, white):
         """
-        **TODO**: Write a generator (using the yield keyword) that allows to iterate
-        over all cells with a piece of given color.
+        Iterate over all board cells that contain a piece of the given color.
 
-        **HINT**: You need a double-nested loop,
-        the first one iterates over all the rows, the second one iterates over each cell in the current row.
-        If the cell has a piece (so it is not None) and the piece has the correct color, *yield* it
+        This method is a generator. It goes through the board row by row and
+        yields each cell that contains a piece matching the given color.
 
-        :param white: True if WHITE pieces are to be iterated, False otherwise
-        :type white: Boolean
+        Args:
+            white (bool): True to iterate over white pieces, False for black pieces.
+
+        Yields:
+            Cell: A cell containing a piece of the specified color.
         """
         for row in self.cells:
             for cell in row:
@@ -247,7 +248,7 @@ class Board(BoardBase):
 
     def find_king(self, white):
         """
-        **TODO**: Find the king piece of given color and return that piece
+        Find the king piece of given color and return that piece
 
         **HINT**: You can use the iterate_cells_with_pieces() Method to find all
         pieces of a given color
@@ -257,8 +258,6 @@ class Board(BoardBase):
 
         :return: The :py:class:'King': object of the given color or None if there is no King on the board.
         """
-        # TODO: Implement
-
         for piece in self.iterate_cells_with_pieces(white):
             if type(piece).__name__ == "King":
                 return piece
@@ -267,7 +266,7 @@ class Board(BoardBase):
 
     def is_king_check(self, white):
         """
-        **TODO**: Evaluate if the king of given color is currently in check.
+        Evaluate if the king of given color is currently in check.
         A check is given if any opposing piece can beat the king in its next move.
 
         **HINT**: You can use the find_king() Method to find the king of the given color.
@@ -275,11 +274,10 @@ class Board(BoardBase):
         For each opposing piece, call the "get_reachable_cells()" method to get a list of all reachable cells.
         Iterate over each reachable cell and check if the kings cell is reachable. If yes, shortcut and return True right away.
         """
-        # TODO: Implement
         king = self.find_king(white=white)
 
-        # if king is None:
-        # return False
+        if king is None:
+            return False
 
         king_cell = king.cell
 
@@ -308,7 +306,7 @@ class Board(BoardBase):
 
     def is_valid_cell(self, cell):
         """
-        **TODO**: Check if the given cell coordinates are valid. A cell coordinate is valid if both
+        Check if the given cell coordinates are valid. A cell coordinate is valid if both
         row and column are between 0 and 7 inclusively.
 
         **HINT**:
@@ -316,7 +314,6 @@ class Board(BoardBase):
         being within the allowed range (0 to 7 inclusively).
         Don´t forget to handle the special case of "cell" being None. Return False in that case
         """
-        # TODO: Implement
         if cell is None:
             return False
 
@@ -325,50 +322,53 @@ class Board(BoardBase):
 
     def cell_is_valid_and_empty(self, cell):
         """
-        **TODO**: Check if the given cell is empty, meaning there is no piece placed on it.
+        Check if the given cell is empty, meaning there is no piece placed on it.
 
         **HINT**:
         You can use the "is_valid_cell()" Method to verify the cell is valid in the first place.
         If so, use "get_cell()" to retrieve the piece placed on it and return True if there is None
         """
-        # TODO: Implement
-        if not self.is_valid_cell(cell=cell):
+        # First check if the cell is on the board
+        if not self.is_valid_cell(cell):
             return False
 
-        return self.get_cell(cell=cell) is None
+        # Cell is valid and empty
+        return self.get_cell(cell) is None
 
     def piece_can_enter_cell(self, piece, cell):
         """
-        **TODO**: Check if the given piece can enter the given cell.
-        Note: You don´t need to check movement rules for the individual piece here. You only need to answer the question
-        whether the piece can be placed on the given cell or not.
+        Check whether a piece is allowed to enter a given cell.
 
-        A piece can be placed on a cell if the cell is valid and either empty or an opposing piece is placed here.
-        A cell cannot be entered if a piece of the same color is already in that cell.
+        A piece can enter a cell if the cell is valid and either empty or occupied
+        by an opposing piece. A cell cannot be entered if it already contains a
+        piece of the same color.
 
-        **HINT**:
-        You can use the "is_valid_cell()" Method to verify the cell is valid in the first place.
-        If so, use "get_cell()" to retrieve the piece placed on it. If there is None, this cell can be entered
-        If, however, there is another piece, it must be of opposing color. Check the other pieces "white" attribute and compare against
-        the given piece "white" attribute.
+        This method does not check the movement rules of the piece. It only checks
+        whether the target cell can be entered.
+
+        Args:
+            piece: The piece that wants to move.
+            cell: The target cell to enter.
+
+        Returns:
+            bool: True if the piece can enter the cell, False otherwise.
         """
-        # TODO: Implement
-
-        target_piece = self.get_cell(cell=cell)
-
-        # Checks if cell is valid
-        if not self.is_valid_cell(cell=cell):
+        # Check if the cell is on the board first
+        if not self.is_valid_cell(cell):
             return False
 
-        # If cell is empty,
+        target_piece = self.get_cell(cell)
+
+        # Empty cell: piece can enter
         if target_piece is None:
             return True
 
+        # Occupied cell: only allowed if it's an enemy piece
         return target_piece.white != piece.white
 
     def piece_can_hit_on_cell(self, piece, cell):
         """
-        **TODO**: Check if the given piece can *hit* at the given cell.
+        Check if the given piece can *hit* at the given cell.
         Note: You don´t need to check movement rules for the individual piece here. You only need to answer the question
         whether the piece can be placed on the given cell or not and hit an opposing piece.
 
@@ -381,8 +381,6 @@ class Board(BoardBase):
         If, however, there is another piece, it must be of opposing color. Check the other pieces "white" attribute and compare against
         the given piece "white" attribute.
         """
-        # TODO: Implement
-
         target_piece = self.get_cell(cell=cell)
 
         # Checks if cell is valid
