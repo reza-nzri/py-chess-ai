@@ -345,31 +345,33 @@ class Board(BoardBase):
 
     def piece_can_enter_cell(self, piece, cell):
         """
-        **TODO**: Check if the given piece can enter the given cell.
-        Note: You don´t need to check movement rules for the individual piece here. You only need to answer the question
-        whether the piece can be placed on the given cell or not.
+        Check whether a piece is allowed to enter a given cell.
 
-        A piece can be placed on a cell if the cell is valid and either empty or an opposing piece is placed here.
-        A cell cannot be entered if a piece of the same color is already in that cell.
+        A piece can enter a cell if the cell is valid and either empty or occupied
+        by an opposing piece. A cell cannot be entered if it already contains a
+        piece of the same color.
 
-        **HINT**:
-        You can use the "is_valid_cell()" Method to verify the cell is valid in the first place.
-        If so, use "get_cell()" to retrieve the piece placed on it. If there is None, this cell can be entered
-        If, however, there is another piece, it must be of opposing color. Check the other pieces "white" attribute and compare against
-        the given piece "white" attribute.
+        This method does not check the movement rules of the piece. It only checks
+        whether the target cell can be entered.
+
+        Args:
+            piece: The piece that wants to move.
+            cell: The target cell to enter.
+
+        Returns:
+            bool: True if the piece can enter the cell, False otherwise.
         """
-        # TODO: Implement
-
-        target_piece = self.get_cell(cell=cell)
-
-        # Checks if cell is valid
-        if not self.is_valid_cell(cell=cell):
+        # Check if the cell is on the board first
+        if not self.is_valid_cell(cell):
             return False
 
-        # If cell is empty,
+        target_piece = self.get_cell(cell)
+
+        # Empty cell: piece can enter
         if target_piece is None:
             return True
 
+        # Occupied cell: only allowed if it's an enemy piece
         return target_piece.white != piece.white
 
     def piece_can_hit_on_cell(self, piece, cell):
