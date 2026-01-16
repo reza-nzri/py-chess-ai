@@ -335,6 +335,7 @@ class Knight(Piece):  # Springer
 
         return reachable_cells
 
+
 class Bishop(Piece):  # Läufer
     def __init__(self, board, white):
         super().__init__(board, white)
@@ -404,9 +405,14 @@ class King(Piece):  # König
         row, col = self.cell
 
         directions = [
-            (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),           (0, 1),
-            (1, -1),  (1, 0),  (1, 1),
+            (-1, -1),
+            (-1, 0),
+            (-1, 1),
+            (0, -1),
+            (0, 1),
+            (1, -1),
+            (1, 0),
+            (1, 1),
         ]
 
         for dr, dc in directions:
