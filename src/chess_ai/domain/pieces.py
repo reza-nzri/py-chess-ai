@@ -399,4 +399,21 @@ class King(Piece):  # König
 
         :return: A list of reachable cells this king could move into.
         """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
+        reachable_cells = []
+
+        row, col = self.cell
+
+        directions = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1),           (0, 1),
+            (1, -1),  (1, 0),  (1, 1),
+        ]
+
+        for dr, dc in directions:
+            target_cell = (row + dr, col + dc)
+
+            # The king can enter an empty cell or a cell with an enemy piece
+            if self.can_enter_cell(target_cell):
+                reachable_cells.append(target_cell)
+
+        return reachable_cells
