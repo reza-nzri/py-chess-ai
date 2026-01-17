@@ -248,7 +248,37 @@ class Rook(Piece):  # Turm
 
         :return: A list of reachable cells this rook could move into.
         """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
+        reachable_cells = []
+
+        row, col = self.cell
+
+        directions = {
+            (-1, 0),
+            (1, 0),
+            (0, -1),
+            (0, 1),
+        }
+
+        for direction_row, direction_col in directions:
+            current_row = row + direction_row
+            current_col = col + direction_col
+
+            while True:
+                current_cell = (current_row, current_col)
+
+                if self.board.cell_is_valid_and_empty(current_cell):
+                    reachable_cells.append(current_cell)
+
+                    current_row += direction_row
+                    current_col += direction_col
+
+                elif self.can_hit_on_cell(current_cell):
+                    reachable_cells.append(current_cell)
+                    break
+                else:
+                    break
+
+        return reachable_cells
 
 
 class Knight(Piece):  # Springer
@@ -289,7 +319,7 @@ class Knight(Piece):  # Springer
             if self.board.cell_is_valid_and_empty(target_cell):
                 reachable_cells.append(target_cell)
 
-            elif self.board.piece_can_hit_on_cell(target_cell):
+            elif self.board.piece_can_hit_on_cell(self, target_cell):
                 reachable_cells.append(target_cell)
 
         return reachable_cells
@@ -301,7 +331,7 @@ class Bishop(Piece):  # Läufer
 
     def get_reachable_cells(self):
         """
-        **TODO** Implement the movability mechanic for `bishop <https://de.wikipedia.org/wiki/L%C3%A4ufer_(Schach)>`_.
+        Implement the movability mechanic for `bishop <https://de.wikipedia.org/wiki/L%C3%A4ufer_(Schach)>`_.
 
         **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
         the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
@@ -321,7 +351,7 @@ class Bishop(Piece):  # Läufer
         directions = {
             (-1, -1),
             (1, -1),
-            (-1, -1),
+            (-1, 1),
             (1, 1)
         }
 
@@ -378,7 +408,7 @@ class Queen(Piece):  # Königin
             (0, 1),
             (-1, -1),
             (1, -1),
-            (-1, -1),
+            (-1, 1),
             (1, 1),
         }
 
@@ -409,7 +439,7 @@ class King(Piece):  # König
 
     def get_reachable_cells(self):
         """
-        **TODO** Implement the movability mechanic for the `king <https://de.wikipedia.org/wiki/K%C3%B6nig_(Schach)>`_.
+        Implement the movability mechanic for the `king <https://de.wikipedia.org/wiki/K%C3%B6nig_(Schach)>`_.
 
         **NOTE**: Here you do not yet need to consider whether your own King would become checked after a move. This will be taken care of by
         the :py:meth:`is_king_check <board.Board.is_king_check>` and :py:meth:`get_valid_cells <pieces.Piece.get_valid_cells>` methods.
