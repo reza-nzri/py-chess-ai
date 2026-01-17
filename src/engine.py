@@ -61,7 +61,6 @@ class Move:
 
 def evaluate_all_possible_moves(board, minMaxArg, maximumNumberOfMoves=10):
     """
-    **TODO**:
     This method must evaluate all possible moves from all pieces of the current color.
 
     So if minMaxArg.playAsWhite is True, all possible moves of all white pieces must be evaluated.
@@ -93,8 +92,29 @@ def evaluate_all_possible_moves(board, minMaxArg, maximumNumberOfMoves=10):
     After sorting, a maximum number of moves as provided by the respective parameter must be returned. If there are
     more moves possible (in most situations there are), only return the top (or worst). Hint: Slice the list after sorting.
     """
-    # TODO: Implement the method according to the above description
 
+    moves = []
+    is_white = minMaxArg.playAsWhite
+
+    for piece in board.iterate_cells_with_pieces(white=is_white):
+        valid_cells = piece.get_valid_cells()
+
+        original_cell = piece.cell
+
+        for target_cell in valid_cells:
+            captured_piece = board.get_cell(target_cell)
+
+            board.set_cell(target_cell, piece)
+            score = board.evaluate()
+
+            moves.append(Move(piece, target_cell, score))
+
+            board.set_cell(original_cell, piece)
+            board.set_cell(target_cell, captured_piece)
+
+        moves.sort(key=lambda m: m.score, reverse=is_white)
+
+    return moves[:maximumNumberOfMoves]
 
 def minMax(board, minMaxArg):
     """
@@ -178,7 +198,22 @@ def suggest_random_move(board):
 
     If there are no legal moves at all, return None.
     """
-    # TODO: Implement a valid random move
+    white_pieces = list(board.iterate_cells_with_pieces(white=True))
+
+    all_possible_moves = []
+
+    for piece in white_pieces:
+        valid_cells = piece.get_valid_cells()
+        for cell in valid_cells:
+
+            move = Move(piece, cell, 0.0)
+            all_possible_moves.append(move)
+
+    if not all_possible_moves:
+        return None
+
+    return random.choice(all_possible_moves)
+
 
 
 def suggest_move(board):
