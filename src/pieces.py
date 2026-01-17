@@ -1,14 +1,15 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING
-
 import numpy as np
+from typing import NamedTuple
 
 if TYPE_CHECKING:
-    from chess_ai.domain.board import Board
+    from board import Board
 
-from chess_ai.util.cell import Cell
 
+class Cell(NamedTuple):
+    row: int
+    column: int
 
 class Piece:
     """

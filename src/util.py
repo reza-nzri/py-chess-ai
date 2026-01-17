@@ -1,4 +1,4 @@
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook
+from pieces import Bishop, King, Knight, Pawn, Queen, Rook
 
 
 def map_piece_to_fullname(piece):

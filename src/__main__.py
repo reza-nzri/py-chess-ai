@@ -2,16 +2,15 @@ import argparse
 import sys
 import unittest
 
-from tests import test_
-
-from chess_ai.domain.board import Board
-from chess_ai.ui.pygame_ui import run_game
+import test_runner
+from board import Board
+from ui import run_game
 
 
 def run_tests():
     print("🧪 Starte Unittests...")
     loader = unittest.TestLoader()
-    suite = loader.loadTestsFromModule(test_)
+    suite = loader.loadTestsFromModule(test_runner)
     runner = unittest.TextTestRunner(verbosity=3)
     runner.failfast = False
     result = runner.run(suite)
@@ -50,4 +49,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

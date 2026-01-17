@@ -1,8 +1,6 @@
-# game loop on top of domain
-
 import random
 
-from chess_ai.util.helpers import cell_to_string, map_piece_to_character
+from util import cell_to_string, map_piece_to_character
 
 DEPTH = 3
 

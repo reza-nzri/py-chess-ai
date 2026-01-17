@@ -6,10 +6,10 @@ from unittest_prettify.colorize import (
     colorize,
 )
 
-from chess_ai.domain.board import Board, InvalidColumnException, InvalidRowException
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Queen, Rook
-from chess_ai.engine import MinMaxArg, evaluate_all_possible_moves
-from chess_ai.util.helpers import (
+from board import Board, InvalidColumnException, InvalidRowException
+from pieces import Bishop, King, Knight, Pawn, Queen, Rook
+from engine import MinMaxArg, evaluate_all_possible_moves
+from util import (
     cell_to_string,
     map_piece_to_character,
     map_piece_to_fullname,

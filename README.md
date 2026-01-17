@@ -46,13 +46,13 @@ Always run the project through `uv` to ensure the correct environment.
 # Run with F5 in vs code for debuging
 
 # Human vs Human
-uv run python -m chess_ai --mode manual
+uv run python src/__main__.py --mode manual
 
 # Human vs Computer
-uv run python -m chess_ai --mode ai
+uv run python src/__main__.py --mode ai
 
 # Test / evaluation mode
-uv run python -m chess_ai --mode test
+uv run python src/__main__.py --mode test
 ```
 
 </details>

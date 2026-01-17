@@ -1,8 +1,8 @@
 import numpy as np
 import pygame
 
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
-from chess_ai.engine.game import suggest_move, suggest_random_move
+from pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
+from engine import suggest_move, suggest_random_move
 
 
 class UIState:

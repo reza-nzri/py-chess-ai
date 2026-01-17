@@ -4,13 +4,12 @@ from uuid import uuid4
 
 import numpy as np
 
-from chess_ai.domain.pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
-from chess_ai.util.helpers import (
+from pieces import Bishop, King, Knight, Pawn, Piece, Queen, Rook
+from util import (
     InvalidColumnException,
     InvalidRowException,
     map_piece_to_character,
 )
-from tests.test_ import iterate_pieces
 
 
 class BoardBase:
