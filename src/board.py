@@ -293,7 +293,7 @@ class Board(BoardBase):
 
     def evaluate(self):
         """
-        **TODO**: Evaluate the current board configuration into a numerical number.
+        Evaluate the current board configuration into a numerical number.
         The higher the number, to more favorable for WHITE (note: This is always from whites perspective!) the current configuration is.
 
 
@@ -301,8 +301,14 @@ class Board(BoardBase):
         Use the iterate_cells_with_pieces Method to find all WHITE pieces and call their respective "evaluate" Method. Sum those scores up.
         Then use the iterate_cells_with_pieces Method to find all BLACK pieces, call their respective "evaluate" Method and substract that from the score.
         """
-        # TODO: Implement
         score = 0.0
+
+        for white_piece in self.iterate_cells_with_pieces(white=True):
+            score += white_piece.evaluate()
+
+        for black_piece in self.iterate_cells_with_pieces(white=False):
+            score -= black_piece.evaluate()
+
         return score
 
     def is_valid_cell(self, cell):

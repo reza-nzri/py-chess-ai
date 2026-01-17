@@ -60,7 +60,7 @@ class Piece:
 
     def evaluate(self):
         """
-        **TODO** Implement a meaningful numerical evaluation of this piece on the board.
+        Implement a meaningful numerical evaluation of this piece on the board.
         This evaluation happens independent of the color as later, values for white pieces will be added and values for black pieces will be subtracted.
 
         **HINT** Making this method *independent* of the pieces color is crucial to get a *symmetric* evaluation metric in the end.
@@ -70,7 +70,31 @@ class Piece:
 
         :return: Return numerical score between -infinity and +infinity. Greater values indicate better evaluation result (more favorable).
         """
-        # TODO: Implement
+        piece_values = {
+            "Pawn": 1.0,
+            "Knight": 3.0,
+            "Bishop": 3.0,
+            "Rook": 5.0,
+            "Queen": 9.0,
+            "King": 1000.0,
+        }
+
+        # Base-Value for piece
+        piece_type = type(self).__name__
+        base_value = piece_values.get(piece_type, 0.0)
+
+        # Evaluate movability (more movability = better)
+        reachable_cells = self.get_reachable_cells()
+        mobility_bonus = len(reachable_cells)
+
+        # Evaluate attack potential (more possible attacks on opposing pieces = better)
+        attack_bonus = 0.0
+        for cell in reachable_cells:
+            target_piece = self.board.get_cell(cell)
+            if target_piece is not None and target_piece.white != self.white:
+                attack_bonus += 0.2
+
+        return base_value + mobility_bonus + attack_bonus
 
     def get_valid_cells(self):
         """
