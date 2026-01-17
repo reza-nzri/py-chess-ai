@@ -247,7 +247,7 @@ class Rook(Piece):  # Turm
 
         :return: A list of reachable cells this rook could move into.
         """
-        return self.get_lengthwise_cells()
+        # TODO: Implement a method that returns all cells this piece can enter in its next move
 
 
 class Knight(Piece):  # Springer
@@ -313,7 +313,37 @@ class Bishop(Piece):  # Läufer
 
         :return: A list of reachable cells this bishop could move into.
         """
-        # TODO: Implement a method that returns all cells this piece can enter in its next move
+        reachable_cells = []
+
+        row, col = self.cell
+
+        directions = {
+            (-1, -1),
+            (1, -1),
+            (-1, -1),
+            (1, 1)
+        }
+
+        for direction_row, direction_col in directions:
+            current_row = row + direction_row
+            current_col = col + direction_col
+
+            while True:
+                current_cell = (current_row, current_col)
+
+                if self.board.cell_is_valid_and_empty(current_cell):
+                    reachable_cells.append(current_cell)
+
+                    current_row += direction_row
+                    current_col += direction_col
+
+                elif self.can_hit_on_cell(current_cell):
+                    reachable_cells.append(current_cell)
+                    break
+                else:
+                    break
+
+        return reachable_cells
 
 
 class Queen(Piece):  # Königin
