@@ -293,7 +293,7 @@ class Board(BoardBase):
 
         return False
 
-    def evaluate(self):
+    def evaluate(self, use_heuristics=False):
         """
         Evaluate the current board configuration into a numerical number.
         The higher the number, to more favorable for WHITE (note: This is always from whites perspective!) the current configuration is.
@@ -305,11 +305,11 @@ class Board(BoardBase):
         """
         score = 0.0
 
-        for white_piece in self.iterate_cells_with_pieces(white=True):
-            score += white_piece.evaluate()
+        for piece in self.iterate_cells_with_pieces(white=True):
+            score += piece.evaluate(use_heuristics=use_heuristics)
 
-        for black_piece in self.iterate_cells_with_pieces(white=False):
-            score -= black_piece.evaluate()
+        for piece in self.iterate_cells_with_pieces(white=False):
+            score -= piece.evaluate(use_heuristics=use_heuristics)
 
         return score
 
