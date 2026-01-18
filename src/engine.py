@@ -182,8 +182,52 @@ def minMax(board, minMaxArg):
     :return: Return the best move to make in the current situation.
     :rtype: :py:class:`Move`
     """
-    # TODO: Implement the Mini-Max algorithm
+    # Get best moves for the current player (already sorted by evaluate_all_possible_moves)
+    moves = evaluate_all_possible_moves(board, minMaxArg)
 
+    # No moves left -> current player loses
+    if not moves:
+        # Always think from WHITE perspective:
+        # If it's WHITE's turn and no moves -> very bad for white (low score)
+        # If it's BLACK's turn and no moves -> very good for white (high score)
+        if minMaxArg.playAsWhite:
+            return Move(None, None, -10**9)
+        else:
+            return Move(None, None, 10**9)
+
+    # Base case: depth == 1 means we stop searching deeper and just take best move now
+    if minMaxArg.depth == 1:
+        return moves[0]
+
+    # Recursive case: try each move, then look at the opponent's best answer
+    for move in moves:
+        piece = move.piece
+        target_cell = move.cell
+
+        # Remember original board state
+        original_cell = piece.cell
+        captured_piece = board.get_cell(target_cell)
+
+        # Do the move (temporary)
+        board.set_cell(target_cell, piece)
+
+        # Ask minimax for the opponent's best response
+        next_arg = minMaxArg.next()
+        reply_best_move = minMax_cached(board, next_arg)
+
+        # Use the resulting score for this move
+        move.score = reply_best_move.score
+
+        # Restore board state (very important!)
+        board.set_cell(original_cell, piece)
+        board.set_cell(target_cell, captured_piece)
+
+    # Sort again based on the updated scores
+    # White wants HIGH score, black wants LOW score (from white perspective)
+    moves.sort(key=lambda m: m.score, reverse=minMaxArg.playAsWhite)
+
+    # Return best move after sorting
+    return moves[0]
 
 def suggest_random_move(board):
     """
