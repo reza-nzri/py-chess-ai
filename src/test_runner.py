@@ -7,8 +7,8 @@ from unittest_prettify.colorize import (
 )
 
 from board import Board, InvalidColumnException, InvalidRowException
-from pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from engine import MinMaxArg, evaluate_all_possible_moves
+from pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from util import (
     cell_to_string,
     map_piece_to_character,
@@ -287,13 +287,13 @@ class TestBoard(unittest.TestCase):
     @colorize(color=RED)
     def test_B01_movability(self):
         # Load JSON Test Suite
-        with open("tests/fixtures/movement_test.json", "rt") as f:
+        with open("tests/movement_test.json", "rt") as f:
             suite = json.load(f)
 
         # Iterate all test cases
         for testcase in suite["testcases"]:
             # Load the configuration from disk
-            self.board.load_from_disk("tests/fixtures/" + testcase["configuration"])
+            self.board.load_from_disk("tests/" + testcase["configuration"])
 
             movability = testcase["movability"]
 
@@ -524,7 +524,7 @@ class TestBoard(unittest.TestCase):
     @colorize(color=RED)
     def test_B07_get_valid_moves_leaves_board_intact(self):
         # Load a configuration from disk
-        self.board.load_from_disk("tests/fixtures/random1.board")
+        self.board.load_from_disk("tests/random1.board")
 
         # Hash it for later reference
         beforeHash = self.board.hash()
@@ -622,7 +622,7 @@ class TestBoard(unittest.TestCase):
 
     @colorize(color=RED)
     def test_C03_evaluate_all_possible_moves_random_config_order(self):
-        self.board.load_from_disk("tests/fixtures/random1.board")
+        self.board.load_from_disk("tests/random1.board")
 
         moves = evaluate_all_possible_moves(
             self.board, minMaxArg=MinMaxArg(playAsWhite=True), maximumNumberOfMoves=500
@@ -646,7 +646,7 @@ class TestBoard(unittest.TestCase):
 
     @colorize(color=RED)
     def test_C04_evaluate_all_possible_moves_random_config_truncated(self):
-        self.board.load_from_disk("tests/fixtures/random1.board")
+        self.board.load_from_disk("tests/random1.board")
 
         moves = evaluate_all_possible_moves(
             self.board, minMaxArg=MinMaxArg(playAsWhite=True), maximumNumberOfMoves=6

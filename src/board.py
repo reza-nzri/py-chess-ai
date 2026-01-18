@@ -79,8 +79,11 @@ class BoardBase:
         """
         self.cells = [[None for _ in range(8)] for _ in range(8)]
 
-        for row, line in enumerate(configString.split("\n")):
+        for row, line in enumerate(configString.splitlines()):
             line = line.strip()
+
+            if not line: continue  # noqa: E701
+
             for col, pieceCode in enumerate(line.split(" ")):
                 if pieceCode == ".":
                     continue
@@ -111,7 +114,6 @@ class BoardBase:
         """
         Read previously stored configuration from disk
 
-        :param fname: Filename to use.
         :param fname: Filename to use.
         """
 

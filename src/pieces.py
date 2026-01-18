@@ -1,7 +1,8 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+
+from typing import TYPE_CHECKING, NamedTuple
+
 import numpy as np
-from typing import NamedTuple
 
 if TYPE_CHECKING:
     from board import Board
@@ -10,6 +11,7 @@ if TYPE_CHECKING:
 class Cell(NamedTuple):
     row: int
     column: int
+
 
 class Piece:
     """
@@ -70,31 +72,21 @@ class Piece:
 
         :return: Return numerical score between -infinity and +infinity. Greater values indicate better evaluation result (more favorable).
         """
-        piece_values = {
-            "Pawn": 1.0,
-            "Knight": 3.0,
-            "Bishop": 3.0,
-            "Rook": 5.0,
-            "Queen": 9.0,
-            "King": 1000.0,
-        }
+        # Basic material value (same for white/black, color is handled later in Board.evaluate)
+        if isinstance(self, Pawn):
+            return 1
+        if isinstance(self, Knight):
+            return 3
+        if isinstance(self, Bishop):
+            return 3
+        if isinstance(self, Rook):
+            return 5
+        if isinstance(self, Queen):
+            return 9
+        if isinstance(self, King):
+            return 1000
 
-        # Base-Value for piece
-        piece_type = type(self).__name__
-        base_value = piece_values.get(piece_type, 0.0)
-
-        # Evaluate movability (more movability = better)
-        reachable_cells = self.get_reachable_cells()
-        mobility_bonus = len(reachable_cells)
-
-        # Evaluate attack potential (more possible attacks on opposing pieces = better)
-        attack_bonus = 0.0
-        for cell in reachable_cells:
-            target_piece = self.board.get_cell(cell)
-            if target_piece is not None and target_piece.white != self.white:
-                attack_bonus += 0.2
-
-        return base_value + mobility_bonus + attack_bonus
+        return 0
 
     def get_valid_cells(self):
         """
@@ -372,12 +364,7 @@ class Bishop(Piece):  # Läufer
 
         row, col = self.cell
 
-        directions = {
-            (-1, -1),
-            (1, -1),
-            (-1, 1),
-            (1, 1)
-        }
+        directions = {(-1, -1), (1, -1), (-1, 1), (1, 1)}
 
         for direction_row, direction_col in directions:
             current_row = row + direction_row
@@ -456,6 +443,7 @@ class Queen(Piece):  # Königin
                     break
 
         return reachable_cells
+
 
 class King(Piece):  # König
     def __init__(self, board, white):

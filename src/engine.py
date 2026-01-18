@@ -92,29 +92,38 @@ def evaluate_all_possible_moves(board, minMaxArg, maximumNumberOfMoves=10):
     After sorting, a maximum number of moves as provided by the respective parameter must be returned. If there are
     more moves possible (in most situations there are), only return the top (or worst). Hint: Slice the list after sorting.
     """
-
     moves = []
     is_white = minMaxArg.playAsWhite
 
+    # Go through all pieces of the current player
     for piece in board.iterate_cells_with_pieces(white=is_white):
+        original_cell = piece.cell
         valid_cells = piece.get_valid_cells()
 
-        original_cell = piece.cell
-
+        # Try every valid target cell for this piece
         for target_cell in valid_cells:
+            # Save what is currently on the target cell (could be None)
             captured_piece = board.get_cell(target_cell)
 
+            # Make the move on the board
             board.set_cell(target_cell, piece)
-            score = board.evaluate()
 
+            # Evaluate the board after the move
+            score = board.evaluate()
             moves.append(Move(piece, target_cell, score))
 
+            # Undo the move: put the piece back and restore captured piece (if any)
             board.set_cell(original_cell, piece)
             board.set_cell(target_cell, captured_piece)
 
-        moves.sort(key=lambda m: m.score, reverse=is_white)
+    # Important bug fix:
+    # Sort ONCE at the end (sorting inside the loop can mess up tie-order and test expectations)
+    # White wants highest score first, Black wants lowest score first
+    moves.sort(key=lambda m: m.score, reverse=is_white)
 
+    # Return only top N moves
     return moves[:maximumNumberOfMoves]
+
 
 def minMax(board, minMaxArg):
     """
@@ -191,7 +200,7 @@ def minMax(board, minMaxArg):
         # If it's WHITE's turn and no moves -> very bad for white (low score)
         # If it's BLACK's turn and no moves -> very good for white (high score)
         if minMaxArg.playAsWhite:
-            return Move(None, None, -10**9)
+            return Move(None, None, -(10**9))
         else:
             return Move(None, None, 10**9)
 
@@ -229,6 +238,7 @@ def minMax(board, minMaxArg):
     # Return best move after sorting
     return moves[0]
 
+
 def suggest_random_move(board):
     """
     Pick a random legal move for White.
@@ -249,7 +259,6 @@ def suggest_random_move(board):
     for piece in white_pieces:
         valid_cells = piece.get_valid_cells()
         for cell in valid_cells:
-
             move = Move(piece, cell, 0.0)
             all_possible_moves.append(move)
 
@@ -257,7 +266,6 @@ def suggest_random_move(board):
         return None
 
     return random.choice(all_possible_moves)
-
 
 
 def suggest_move(board):
