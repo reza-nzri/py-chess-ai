@@ -109,7 +109,7 @@ def evaluate_all_possible_moves(board, minMaxArg, maximumNumberOfMoves=10):
             board.set_cell(target_cell, piece)
 
             # Evaluate the board after the move
-            score = board.evaluate()
+            score = board.evaluate(use_heuristics=True)
             moves.append(Move(piece, target_cell, score))
 
             # Undo the move: put the piece back and restore captured piece (if any)

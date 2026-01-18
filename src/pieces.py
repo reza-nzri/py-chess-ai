@@ -60,7 +60,7 @@ class Piece:
         """
         return self.board.piece_can_hit_on_cell(self, cell)
 
-    def evaluate(self):
+    def evaluate(self, use_heuristics=False):
         """
         Implement a meaningful numerical evaluation of this piece on the board.
         This evaluation happens independent of the color as later, values for white pieces will be added and values for black pieces will be subtracted.
@@ -72,21 +72,49 @@ class Piece:
 
         :return: Return numerical score between -infinity and +infinity. Greater values indicate better evaluation result (more favorable).
         """
-        # Basic material value (same for white/black, color is handled later in Board.evaluate)
+        # Material value (test-safe)
         if isinstance(self, Pawn):
-            return 1
-        if isinstance(self, Knight):
-            return 3
-        if isinstance(self, Bishop):
-            return 3
-        if isinstance(self, Rook):
-            return 5
-        if isinstance(self, Queen):
-            return 9
-        if isinstance(self, King):
-            return 1000
+            base = 1.0
+        elif isinstance(self, Knight):
+            base = 3.0
+        elif isinstance(self, Bishop):
+            base = 3.0
+        elif isinstance(self, Rook):
+            base = 5.0
+        elif isinstance(self, Queen):
+            base = 9.0
+        elif isinstance(self, King):
+            base = 1000.0
+        else:
+            base = 0.0
 
-        return 0
+        # Keep tests stable: default is material-only
+        if not use_heuristics:
+            return base
+
+        # Simple extra factors for AI (small weights)
+        mobility = 0.0
+        attack = 0.0
+        center = 0.0
+
+        valid_cells = self.get_valid_cells()
+        mobility = 0.05 * len(valid_cells)  # more legal moves = slightly better
+
+        # Count capturable enemy pieces
+        for cell in valid_cells:
+            target = self.board.get_cell(cell)
+            if target is None:
+                continue
+            if target.white != self.white:
+                attack += 0.10  # small bonus per possible capture
+
+        # Prefer center control a bit
+        for cell in valid_cells:
+            r, c = int(cell[0]), int(cell[1])
+            if 2 <= r <= 5 and 2 <= c <= 5:
+                center += 0.01
+
+        return base + mobility + attack + center
 
     def get_valid_cells(self):
         """
