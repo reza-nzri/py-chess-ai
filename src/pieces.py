@@ -241,7 +241,7 @@ class Pawn(Piece):  # Bauer
                 if self.board.cell_is_valid_and_empty(
                     kick_start
                 ) and self.board.cell_is_valid_and_empty(move_forward):
-                    moves.append([row - 2, column])
+                    moves.append(kick_start)
             black_hit_right: Cell = (row - 1, column - 1)
             if self.can_hit_on_cell(black_hit_right):
                 moves.append(black_hit_right)
