@@ -11,13 +11,32 @@ from **Human vs Human** to **Human vs Computer using MiniMax**.
   - Random valid move
 - **Human vs Computer (MiniMax AI)**
 
+### 🤖 MiniMax AI
+
+The MiniMax AI uses a depth-limited search to evaluate future game states.
+Moves are scored using a material-based evaluation, extended with simple heuristics
+such as mobility, capture potential, and center control.
+
 ## 🧰 Tech Stack
 
-- Python 3.11+
+- Python 3.13+
 - Object-Oriented Design
 - Modular and package-based architecture
 - UI via `pygame` or CLI
 - Dependency management with `uv`
+
+<details>
+  <summary><h2>🎓 University Evaluation Criteria</h2></summary>
+
+This project fulfills the official requirements of the course *Schach KI*:
+
+- Human vs Human chess game (up to 70 points)
+- Human vs Computer (Random valid moves) (up to 10 points)
+- Human vs Computer using MiniMax (up to 30 points)
+
+**Test Mode:**  
+All functionalities can be demonstrated by running the project in test mode.
+</details>
 
 <details>
 <summary><h2>✅ Prerequisites</h2></summary>
@@ -54,24 +73,6 @@ uv run python src/__main__.py --mode ai
 # Test / evaluation mode
 uv run python src/__main__.py --mode test
 ```
-
-</details>
-<details>
-<summary><h2>🧪 Running Tests</h2></summary>
-
-### Unit Tests
-
-```bash
-uv run python -m unittest
-```
-
-### Pytest (recommended)
-
-```bash
-uv run pytest
-```
-
-All tests **must pass** during evaluation.
 </details>
 
 ## 🤝 Team Workflow
