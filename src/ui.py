@@ -181,12 +181,17 @@ def run_game(board, manual=False):
     while running:
         if nextMove is None and not manual:
 <<<<<<< HEAD
+<<<<<<< HEAD
             # nextMove = suggest_move(board)       # for MinMax (AI)
             nextMove = suggest_random_move(board)  # Random AI
 =======
             nextMove = suggest_move(board)       # for MinMax (AI)
             # nextMove = suggest_random_move(board)  # Random AI
 >>>>>>> 9db546a (Add instructions to enable MiniMax AI in README & update UI code comments)
+=======
+            # nextMove = suggest_move(board)       # for MinMax (AI)
+            nextMove = suggest_random_move(board)  # Random AI
+>>>>>>> fe89d7d2efc6f0993f7002ef519e212701da13da
             print("\nNext Move is ", nextMove)
 
             # If no move is possible, end the game
