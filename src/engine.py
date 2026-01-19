@@ -293,7 +293,9 @@ def minMax_cached(board, minMaxArg):
     hash = str(minMaxArg.depth) + board.hash()
     if hash in eval_cache:
         total_hits += 1
-        # print(f"Cache hit! Cache has {len(eval_cache.keys())} entries with {total_hits} hits so far")
+        print(
+            f"Cache hit! Cache has {len(eval_cache.keys())} entries with {total_hits} hits so far"
+        )
         return eval_cache[hash]
 
     # Its not the cache so do the actual evaluation
