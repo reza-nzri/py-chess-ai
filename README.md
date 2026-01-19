@@ -44,18 +44,12 @@ All functionalities can be demonstrated by running the project in test mode.
 - Python 3.11 or newer
 - [`uv`](https://github.com/astral-sh/uv)
 
-</details>
+### ⚙️ Setup
 
-<details>
-<summary><h2>⚙️ Setup</h2></summary>
-
-Install dependencies using the lockfile:
-
-```bash
-uv sync
-````
+Install dependencies using the lockfile: `uv sync`
 
 </details>
+
 <details>
 <summary><h2>▶️ Running the Application</h2></summary>
 
