@@ -182,7 +182,14 @@ def run_game(board, manual=False):
         if nextMove is None and not manual:
             # nextMove = suggest_move(board)
             nextMove = suggest_random_move(board)
-            print("Next Move is ", nextMove)
+            print("\nNext Move is ", nextMove)
+
+            # If no move is possible, end the game
+            if nextMove is None:
+                print("\nNo valid moves left. Game over!\n")
+                running = False
+                continue
+
             board.set_cell(nextMove.cell, nextMove.piece)
             uiState.score = nextMove.score
             displayScore = np.tanh(uiState.score / 8.0) * 4.0
