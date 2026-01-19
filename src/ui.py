@@ -177,18 +177,24 @@ def run_game(board, manual=False):
 
     nextMove = None
     whitesTurn = True
+    randomAI = False
 
     while running:
         if nextMove is None and not manual:
-            # nextMove = suggest_move(board)       # for MinMax (AI)
-            nextMove = suggest_random_move(board)  # Random AI
-            print("\nNext Move is ", nextMove)
+            if randomAI:
+                nextMove = suggest_random_move(board)  # Random AI
+                if nextMove is None:
+                    print("\nNo valid moves left. Humanity wins!\n")
+                    running = False
+                    continue
+            else:
+                nextMove = suggest_move(board)  # for MinMax (AI)
+                if nextMove.cell is None:
+                    print("\nNo valid moves left. Humanity wins!\n")
+                    running = False
+                    continue
 
-            # If no move is possible, end the game
-            if nextMove is None:
-                print("\nNo valid moves left. Game over!\n")
-                running = False
-                continue
+            print("\nNext Move is ", nextMove)
 
             board.set_cell(nextMove.cell, nextMove.piece)
             uiState.score = nextMove.score

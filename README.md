@@ -71,30 +71,26 @@ uv run python src/__main__.py --mode test
 <details>
 <summary><h2>🧠 Enable MiniMax AI - (Real AI) instead of Random AI</h2></summary>
 
-By default, running `--mode ai` uses **Random AI** (random valid moves).
-To enable the **MiniMax AI**, change **one line** in the UI code:
+By default, running `--mode ai` uses **MiniMax AI**.
+To toggle between the **MiniMax AI** and **Random AI**, change **one line** in the UI code:
 
 ### Step 1 — Open the `src/ui.py` file
 
-### Step 2 — Change the AI move function (lines 183–184)
+### Step 2 — Change the AI move function (lines 180)
 
-Find this block inside `nextMove = suggest`:
-
-```python
-if nextMove is None and not manual:
-    # nextMove = suggest_move(board)
-    nextMove = suggest_random_move(board)
-```
-
-Replace it with:
+Find variable called randomAI.
 
 ```python
-if nextMove is None and not manual:
-    nextMove = suggest_move(board)          # MiniMax (AI)
-    # nextMove = suggest_random_move(board) # Random AI
+    randomAI = False
 ```
 
-✅ Done. Now `--mode ai` will use **MiniMax AI**.
+Set it to True to run **Random Ai**
+
+```python
+    randomAI = True
+```
+
+✅ Done. Now `--mode ai` will use **Random AI**.
 
 ### Step 3 — Run the game
 
@@ -102,15 +98,11 @@ if nextMove is None and not manual:
 uv run python src/__main__.py --mode ai
 ```
 
-### Switch back to Random AI
+### Switch back to MiniMax AI
 
-Undo the change (use `suggest_random_move(board)` again).
-</details>
+Undo the change. Use.
 
-</details>
+```python
+    randomAI = False
+```
 
-## 🤝 Team Workflow
-
-- Incremental weekly progress
-- Git-based collaboration
-- Code reviews before merging

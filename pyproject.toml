@@ -1,6 +1,6 @@
 [project]
 name = "py-chess-ai"
-version = "0.1.0"
+version = "1.0.0"
 description = "A chess game against ai"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -13,14 +13,9 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "pytest>=9.0.2",
     "ruff>=0.14.8",
 ]
 
-[tool.pytest]
-testpaths = [
-    "tests",
-]
 pythonpath = ["src"]
 
 [tool.uv]
@@ -116,7 +111,3 @@ line-ending = "auto"
 
 docstring-code-format = false
 docstring-code-line-length = "dynamic"
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*.py" = ["F401"]
-"src/**/*.py" = ["F401"]
