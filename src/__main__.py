@@ -12,7 +12,7 @@ def run_tests():
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromModule(test_runner)
     runner = unittest.TextTestRunner(verbosity=3)
-    runner.failfast = True
+    runner.failfast = False
     result = runner.run(suite)
     if result.wasSuccessful():
         sys.exit(0)
