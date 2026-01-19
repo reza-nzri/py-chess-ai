@@ -167,48 +167,6 @@ class Piece:
 
         return valid_cells
 
-    def get_lengthwise_cells(self) -> list[Cell]:
-        moves: list[Cell] = []
-        row, column = self.cell
-
-        for x in range(row + 1, 8):
-            up_cells: Cell = (x, column)
-            if self.board.cell_is_valid_and_empty(up_cells):
-                moves.append(up_cells)
-            else:
-                if self.can_hit_on_cell(up_cells):
-                    moves.append(up_cells)
-                break
-
-        for x in range(row - 1, -1, -1):
-            down_cells: Cell = (x, column)
-            if self.board.cell_is_valid_and_empty(down_cells):
-                moves.append(down_cells)
-            else:
-                if self.can_hit_on_cell(down_cells):
-                    moves.append(down_cells)
-                break
-
-        for y in range(column + 1, 8):
-            right_cells: Cell = (row, y)
-            if self.board.cell_is_valid_and_empty(right_cells):
-                moves.append(right_cells)
-            else:
-                if self.can_hit_on_cell(right_cells):
-                    moves.append(right_cells)
-                break
-
-        for y in range(column - 1, -1, -1):
-            left_cells: Cell = (row, y)
-            if self.board.cell_is_valid_and_empty(left_cells):
-                moves.append(left_cells)
-            else:
-                if self.can_hit_on_cell(left_cells):
-                    moves.append(left_cells)
-                break
-
-        return moves
-
 
 class Pawn(Piece):  # Bauer
     def __init__(self, board, white):
