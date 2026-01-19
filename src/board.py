@@ -82,8 +82,8 @@ class BoardBase:
         for row, line in enumerate(configString.splitlines()):
             line = line.strip()
 
-            if not line: # noqa: E701
-                continue  # noqa: E701
+            if not line:
+                continue
 
             for col, pieceCode in enumerate(line.split(" ")):
                 if pieceCode == ".":
